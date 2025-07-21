@@ -16,10 +16,10 @@ class UserControll extends Controller
 
         if (auth()->attempt(['name' => $credentials['loginname'], 'password' => $credentials['loginpassword']])) {
             $request->session()->regenerate();
-            return redirect('/'); // success: go to homepage or dashboard
+            return redirect('/'); 
         }
 
-        // login failed: redirect back with error
+       
         return back()->withErrors([
             'loginname' => 'Invalid credentials.',
         ])->withInput();

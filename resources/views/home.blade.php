@@ -8,102 +8,130 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 text-gray-800 min-h-screen font-sans">
+<body class="bg-gray-900 text-gray-100 min-h-screen font-sans">
     @auth
-    
-        <div class="border-2 border-black p-6 m-4 bg-white rounded-lg shadow">
-            <p class="font-semibold text-green-700 mb-2">Congrats you are logged in.</p>
-            <hr class="mb-4">
+        <div class="max-w-3xl mx-auto mt-6 p-6 bg-gray-800 border border-gray-700 rounded-lg shadow-md">
+            <p class="text-green-400 font-semibold mb-4">✅ Congrats! You're logged in.</p>
 
-            <h1 class="text-2xl font-bold mb-4">User Dashboard</h1>
+            <h1 class="text-2xl font-bold mb-6 border-b border-gray-600 pb-2">User Dashboard</h1>
 
-            <div class="bg-blue-200 p-2 w-40 h-40 mb-4 flex items-center justify-center">
+            <div class="flex justify-center mb-6">
                 @if(Auth::user()->profile_image)
-                    <img src="{{ asset('storage/' . Auth::user()->profile_image) }}"
-                        class="w-36 h-36 object-cover rounded-full">
+                    <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" class="w-36 h-36 rounded-full object-cover border-4 border-blue-400 shadow">
                 @else
-                    <p class="text-sm text-gray-600">No profile image set.</p>
+                    <div class="w-36 h-36 rounded-full bg-gray-700 flex items-center justify-center text-sm text-gray-300">
+                        No Image
+                    </div>
                 @endif
             </div>
 
-            <table class="w-full text-left border border-gray-300 mb-4">
-                <tr class="bg-gray-200">
-                    <th class="p-2">Name</th>
-                    <td class="p-2">{{ auth()->user()->name }}</td>
+            <table class="w-full text-sm border border-gray-700 rounded overflow-hidden">
+                <tr class="bg-gray-700">
+                    <th class="p-3 font-medium text-left">Name</th>
+                    <td class="p-3">{{ auth()->user()->name }}</td>
                 </tr>
                 <tr>
-                    <th class="p-2 bg-gray-200">Email</th>
-                    <td class="p-2">{{ auth()->user()->email }}</td>
+                    <th class="p-3 bg-gray-800">Email</th>
+                    <td class="p-3">{{ auth()->user()->email }}</td>
                 </tr>
                 <tr>
-                    <th class="p-2 bg-gray-200">Gender</th>
-                    <td class="p-2">{{ auth()->user()->gender }}</td>
+                    <th class="p-3 bg-gray-700">Gender</th>
+                    <td class="p-3">{{ auth()->user()->gender }}</td>
                 </tr>
                 <tr>
-                    <th class="p-2 bg-gray-200">Date of Birth</th>
-                    <td class="p-2">{{ auth()->user()->dob }}</td>
+                    <th class="p-3 bg-gray-800">Date of Birth</th>
+                    <td class="p-3">{{ auth()->user()->dob }}</td>
                 </tr>
                 <tr>
-                    <th class="p-2 bg-gray-200">State</th>
-                    <td class="p-2">{{ auth()->user()->state }}</td>
+                    <th class="p-3 bg-gray-700">State</th>
+                    <td class="p-3">{{ auth()->user()->state }}</td>
                 </tr>
                 <tr>
-                    <th class="p-2 bg-gray-200">District</th>
-                    <td class="p-2">{{ auth()->user()->district }}</td>
+                    <th class="p-3 bg-gray-800">District</th>
+                    <td class="p-3">{{ auth()->user()->district }}</td>
                 </tr>
             </table>
 
-            <div class="mb-6">
+            <div class="mt-6 flex flex-wrap gap-3">
                 <a href="{{ route('dashboard.edit') }}"
-                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mr-2">Edit Profile</a>
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Edit Profile</a>
 
-                <form action="{{ route('dashboard.delete') }}" method="POST" class="inline">
+                <form action="{{ route('dashboard.delete') }}" method="POST" onsubmit="return confirm('Are you sure?')" class="inline">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" onclick="return confirm('Are you sure?')"
-                        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded mr-2">Delete Profile</button>
+                    <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Delete Profile</button>
                 </form>
 
                 <form action="/logout" method="POST" class="inline">
                     @csrf
-                    <button class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900">Log out</button>
+                    <button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded">Log Out</button>
                 </form>
             </div>
         </div>
-
     @else
-        <div class="border-2 border-black p-6 m-4 bg-white rounded-lg shadow">
+        {{-- Register --}}
+        <div class="max-w-2xl mx-auto mt-6 p-6 bg-gray-800 rounded-lg shadow border border-gray-700">
             <h2 class="text-xl font-bold mb-4">Register</h2>
             <form action="/register" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
-                <input name="name" type="text" placeholder="Name" class="w-full border px-3 py-2 rounded">
-                <input name="email" type="email" placeholder="Email" class="w-full border px-3 py-2 rounded">
-                <input name="password" type="password" placeholder="Password" class="w-full border px-3 py-2 rounded">
-                Profile Image<small>(optional)</small>:
-                <input type="file" name="profile_image" accept="image/*">
+                <input name="name" type="text" placeholder="Name" class="w-full bg-gray-900 border border-gray-700 text-gray-100 px-3 py-2 rounded">
+                <input name="email" type="email" placeholder="Email" class="w-full bg-gray-900 border border-gray-700 text-gray-100 px-3 py-2 rounded">
+                <input name="password" type="password" placeholder="Password" class="w-full bg-gray-900 border border-gray-700 text-gray-100 px-3 py-2 rounded">
+
                 <div>
-                    Gender:
-                    <label><input type="radio" name="gender" value="male" class="mr-1"> Male</label>
-                    <label><input type="radio" name="gender" value="female" class="mx-2"> Female</label>
-                    <label><input type="radio" name="gender" value="other" class="mr-1"> Other</label>
+                    <label class="block mb-1 text-sm text-gray-300">Profile Image (optional):</label>
+                    <input type="file" name="profile_image" accept="image/*" class="text-sm text-gray-300">
                 </div>
-                Date of Birth:
-                <input type="date" name="dob" class="border px-3 py-2 rounded">
+
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm text-gray-300">Gender:</label>
+                    <div class="flex gap-4">
+                        <label><input type="radio" name="gender" value="male" class="mr-1"> Male</label>
+                        <label><input type="radio" name="gender" value="female" class="mr-1"> Female</label>
+                        <label><input type="radio" name="gender" value="other" class="mr-1"> Other</label>
+                    </div>
+                </div>
+
                 <div>
-                    State:
-                    <select id="state" name="state" class="border px-3 py-2 rounded w-full">
+                    <label class="block mb-1 text-sm text-gray-300">Date of Birth:</label>
+                    <input type="date" name="dob" class="w-full bg-gray-900 border border-gray-700 text-gray-100 px-3 py-2 rounded">
+                </div>
+
+                <div>
+                    <label class="block mb-1 text-sm text-gray-300">State:</label>
+                    <select id="state" name="state" class="border border-gray-700 bg-gray-900 text-gray-100 px-3 py-2 rounded w-full">
                         <option value="">-- Select State --</option>
                         @foreach (json_decode(file_get_contents(public_path('states_districts.json')), true) as $state => $districts)
                             <option value="{{ $state }}">{{ $state }}</option>
                         @endforeach
                     </select>
-                    District:
-                    <select id="district" name="district" class="border px-3 py-2 rounded w-full">
+                </div>
+
+                <div>
+                    <label class="block mb-1 text-sm text-gray-300">District:</label>
+                    <select id="district" name="district" class="border border-gray-700 bg-gray-900 text-gray-100 px-3 py-2 rounded w-full">
                         <option value="">-- Select District --</option>
                     </select>
                 </div>
-                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Register</button>
+
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Register</button>
             </form>
+        </div>
+
+        {{-- Login --}}
+        <div class="max-w-2xl mx-auto mt-6 p-6 bg-gray-800 rounded-lg shadow border border-gray-700">
+            <h2 class="text-xl font-bold mb-4">Log In</h2>
+            <form action="{{ route('login.submit') }}" method="POST" class="space-y-4">
+                @csrf
+                <input name="loginname" type="text" placeholder="Username" class="w-full bg-gray-900 border border-gray-700 text-gray-100 px-3 py-2 rounded">
+                <input name="loginpassword" type="password" placeholder="Password" class="w-full bg-gray-900 border border-gray-700 text-gray-100 px-3 py-2 rounded">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Log In</button>
+            </form>
+        </div>
+
+        <div class="text-center mt-6">
+            <a href="{{ url('/explore-posts') }}"
+                class="inline-block bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2 rounded">View Public Posts</a>
         </div>
 
         <script>
@@ -126,21 +154,6 @@
                     });
             });
         </script>
-
-        <div class="border-2 border-black p-6 m-4 bg-white rounded-lg shadow">
-            <h2 class="text-xl font-bold mb-4">Log In</h2>
-            <form action="{{ route('login.submit') }}" method="POST" class="space-y-4">
-                @csrf
-                <input name="loginname" type="text" placeholder="Username" class="w-full border px-3 py-2 rounded">
-                <input name="loginpassword" type="password" placeholder="Password" class="w-full border px-3 py-2 rounded">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Log in</button>
-            </form>
-        </div>
-
-        <div class="text-center mt-6">
-            <a href="{{ url('/explore-posts') }}"
-                class="inline-block bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2 rounded">View Public Posts</a>
-        </div>
     @endauth
 </body>
 
