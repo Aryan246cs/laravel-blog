@@ -42,6 +42,17 @@ Route::get('/your-posts', function () {
     return view('your-posts', ['posts' => $posts]);
 })->middleware('auth')->name('your-posts');
 
+Route::get('/report', function () {
+    $posts = auth()->user()->usersCoolPosts()->latest()->get();
+    return view('report', ['posts' => $posts]);
+})->middleware('auth')->name('report');
+
+Route::get('/insight', function () {
+    $postCounts = auth()->user()->usersCoolPosts()->count();
+
+    return view('website-insight', ['postCounts'=> $postCounts]);
+})->middleware('auth')->name('insight');
+
 Route::post('/create-post',[PostController::class,'createPost']);
 Route::get('/edit-post/{post}',[PostController::class,'showEditScreen']);
 Route::put('/edit-post/{post}',[PostController::class,'actuallyUpdatePost']);
