@@ -81,11 +81,11 @@ class UserControll extends Controller
 
         ]);
         $incomingfields['password'] = bcrypt($incomingfields['password']);
-
+        
         if ($request->hasFile('profile_image')) {
-            $incomingfields['profile_image'] = $request->file('profile_image')->store('profile_images', 'public');
+            $incomingfields['profile_image'] = $request->file('profile_image')->store('storage','public');
         }
-
+dd($incomingfields);
         $user = User::create($incomingfields);
 
         auth()->login($user);

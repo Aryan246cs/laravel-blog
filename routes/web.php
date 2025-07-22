@@ -4,10 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserControll;
 use App\Http\Controllers\PostController;
 use App\Models\Post;
+use App\Models\User;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
+
+use App\Http\Controllers\insightController;
 
 
 
@@ -20,6 +23,9 @@ Route::get('/login', function () {
     }
     return view('home', ['posts' => $posts]);
 })->name('login');
+
+Route::get('/web-analytics', [insightController::class, 'index'])->name('web-analytics');
+
 
 Route::get('/districts/{state}', [LocationController::class, 'getDistricts']);
 Route::view('/location-form', 'location-form');
@@ -46,12 +52,6 @@ Route::get('/report', function () {
     $posts = auth()->user()->usersCoolPosts()->latest()->get();
     return view('report', ['posts' => $posts]);
 })->middleware('auth')->name('report');
-
-Route::get('/insight', function () {
-    $postCounts = auth()->user()->usersCoolPosts()->count();
-
-    return view('website-insight', ['postCounts'=> $postCounts]);
-})->middleware('auth')->name('insight');
 
 Route::post('/create-post',[PostController::class,'createPost']);
 Route::get('/edit-post/{post}',[PostController::class,'showEditScreen']);

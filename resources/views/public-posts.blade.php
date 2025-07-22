@@ -60,10 +60,10 @@
 
         @endauth
 
-        <!-- <a href="{{ route('insight') }}"
+        <a href="{{ route('web-analytics') }}"
             class="bg-gray-900 hover:bg-green-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow transition duration-200">
-            Website Insight
-        </a> -->
+            Website Analytics
+        </a>
     </header>
 
     <section class="bg-gradient-to-r from-gray-900 to-black text-white">
