@@ -16,10 +16,10 @@ class UserControll extends Controller
 
         if (auth()->attempt(['name' => $credentials['loginname'], 'password' => $credentials['loginpassword']])) {
             $request->session()->regenerate();
-            return redirect('/'); 
+            return redirect('/');
         }
 
-       
+
         return back()->withErrors([
             'loginname' => 'Invalid credentials.',
         ])->withInput();
@@ -33,6 +33,7 @@ class UserControll extends Controller
         ]);
 
         $user = auth()->user();
+
 
         // Delete old image if exists
         if ($user->profile_image && \Storage::disk('public')->exists($user->profile_image)) {
@@ -81,11 +82,10 @@ class UserControll extends Controller
 
         ]);
         $incomingfields['password'] = bcrypt($incomingfields['password']);
-        
+
         if ($request->hasFile('profile_image')) {
-            $incomingfields['profile_image'] = $request->file('profile_image')->store('storage','public');
+            $incomingfields['profile_image'] = $request->file('profile_image')->store('profile_images', 'public');
         }
-dd($incomingfields);
         $user = User::create($incomingfields);
 
         auth()->login($user);
