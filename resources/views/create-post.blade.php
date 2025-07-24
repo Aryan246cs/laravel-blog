@@ -28,6 +28,16 @@
             </div>
 
             <div>
+                <label for="category" class="block font-semibold text-gray-300 mb-1">Category:</label>
+                <select name="category_id" required class="bg-gray-600 w-full border rounded px-3 py-2 mt-1">
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+
+            <div>
                 <label class="block font-semibold text-gray-300 mb-1">Post Visibility</label>
                 <div class="flex items-center gap-6 mt-1">
                     <label class="flex items-center gap-2">

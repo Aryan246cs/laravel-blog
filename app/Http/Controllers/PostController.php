@@ -4,28 +4,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Category;
 
 class PostController extends Controller
 {
-
-    public function publicPosts()
+    public function publicPosts(Request $request, $category = null)
     {
-        $posts = Post::where('visibility', 'public')->with(['comments.user'])->latest()->paginate(5);
-        return view('public-posts', compact('posts'));
+        $categories = Category::all();
+
+        $posts = Post::where('visibility', 'public')
+            ->when($category, function ($query) use ($category) {
+                $query->whereHas('category', function ($q) use ($category) {
+                    $q->where('name', $category);
+                });
+            })
+            ->with(['comments.user'])
+            ->latest()
+            ->paginate(5);
+
+        return view('public-posts', compact('posts', 'categories', 'category'));
     }
 
     public function home()
     {
         $user = auth()->user();
 
-        // Fetch only private posts by this user
         $posts = Post::with('user')
             ->where('user_id', $user->id)
             ->where('visibility', 'private')
             ->latest()
             ->get();
+        $categories = Category::all();
 
-        return view('home', compact('user', 'posts'));
+        return view('home', compact('user', 'posts', 'categories'));
     }
 
     public function deletePost(Post $post)
@@ -35,6 +46,7 @@ class PostController extends Controller
         }
         return redirect('/');
     }
+
     public function actuallyUpdatePost(Post $post, Request $request)
     {
         if (auth()->user()->id !== $post['user_id']) {
@@ -52,25 +64,29 @@ class PostController extends Controller
         $post->update($incomingFields);
         return redirect('/');
     }
+
     public function showEditScreen(Post $post)
     {
-        //policy (right method)
         if (auth()->user()->id !== $post['user_id']) {
             return redirect('/');
         }
 
         return view('edit-post', ['post' => $post]);
     }
+
     public function createPost(Request $request)
     {
         $incomingFields = $request->validate([
             'title' => 'required',
             'body' => 'required',
-            'visibility' => 'required|in:public,private'
+            'visibility' => 'required|in:public,private',
+            'category_id' => 'required|exists:categories,id',
         ]);
+
         $incomingFields['title'] = strip_tags($incomingFields['title']);
         $incomingFields['body'] = strip_tags($incomingFields['body']);
         $incomingFields['user_id'] = auth()->id();
+
         Post::create($incomingFields);
         return redirect('/');
     }

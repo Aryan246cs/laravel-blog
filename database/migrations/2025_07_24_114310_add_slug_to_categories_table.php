@@ -9,19 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        // Schema::create('comments', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->timestamps();
-        // });
-    }
+   public function up()
+{
+    Schema::table('categories', function (Blueprint $table) {
+        $table->string('slug')->unique()->after('name');
+    });
+}
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        Schema::table('categories', function (Blueprint $table) {
+            //
+        });
     }
 };

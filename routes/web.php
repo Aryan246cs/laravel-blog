@@ -5,6 +5,7 @@ use App\Http\Controllers\UserControll;
 use App\Http\Controllers\PostController;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Category;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CommentController;
@@ -39,9 +40,12 @@ Route::get('/dashboard', function () {
     return view('home', ['posts' => $posts]);
 })->middleware('auth')->name('dashboard');
 
+
 Route::get('/create-post', function () {
-    return view('create-post');
+    $categories = Category::all();
+    return view('create-post', compact('categories'));
 })->middleware('auth')->name('create-post');
+
 
 Route::get('/your-posts', function () {
     $posts = auth()->user()->usersCoolPosts()->latest()->get();
@@ -68,6 +72,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/post/{post}/comment', [CommentController::class, 'store'])->name('comment.store');
     Route::post('/post/{post}/like', [LikeController::class, 'store'])->name('like.store');
 });
+Route::get('/explore-posts/{category?}', [PostController::class, 'publicPosts'])->name('explore.posts');
 
 
 

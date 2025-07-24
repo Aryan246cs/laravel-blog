@@ -100,11 +100,30 @@
 
 
 
+
     <!-- Public Posts -->
     <main class="max-w-4xl mx-auto px-4 py-10">
         <h2 class="text-2xl md:text-3xl font-semibold mb-4">
             🔍 See What's Shared
         </h2>
+        <h2 class="text-gray-900">.</h2>
+<div class="flex flex-wrap gap-3 mb-6">
+    @foreach($categories as $cat)
+        <a href="{{ route('explore.posts', $cat->name) }}"
+           class="px-4 py-2 text-sm rounded-full border border-blue-600
+                  {{ $category == $cat->name ? 'bg-blue-600 text-white' : 'text-blue-600 hover:bg-blue-100' }}">
+            {{ $cat->name }}
+        </a>
+    @endforeach
+
+    @if($category)
+        <a href="{{ route('explore.posts') }}"
+           class="px-4 py-2 text-sm rounded-full text-red-600 border border-red-600 hover:bg-red-100">
+            Clear Filter ✕
+        </a>
+    @endif
+</div>
+
         <h2 class="text-gray-900">.</h2>
 
 
