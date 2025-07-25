@@ -67,7 +67,7 @@
     </header>
 
     <section class="bg-gradient-to-r from-gray-900 to-black text-white">
-        <div class="max-w-4xl mx-auto px-6 py-20 text-center">
+        <div class="max-w-5xl mx-auto px-6 py-20 text-center">
             <h1 class="text-3xl md:text-5xl font-extrabold mb-4">Uncover Stories That Resonate</h1>
             <p class="text-base md:text-lg mb-6">
                 Welcome to <strong>Quillly</strong>- your space to write, express, and share. Whether it's a personal
@@ -218,7 +218,7 @@
                 </div>
                 <div class="flex gap-4">
                     <span class="font-bold">03.</span>
-                    <p>Write the Title and Body of your Blog and select the public or private button.</p>
+                    <p>Write the Title and Body of your Blog then select the category and visibility of your post.</p>
                 </div>
                 <div class="flex gap-4">
                     <span class="font-bold">04.</span>
