@@ -24,6 +24,9 @@
                     {{ $post['title'] }}
                     <small class="text-gray-400 text-sm">by {{ $post->user->name }}</small>
                 </h3>
+                <p class="text-gray-500 text-sm">
+                    Posted on {{ $post->created_at->format('F j, Y') }}
+                </p>
                 <p class="text-gray-300 mb-4">{{ $post['body'] }}</p>
 
                 <div class="flex items-center gap-4">

@@ -18,6 +18,13 @@ class PostController extends Controller
                     $q->where('name', $category);
                 });
             })
+            ->when($request->search, function ($query) use ($request) {
+                $search = $request->search;
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'LIKE', "%{$search}%")
+                        ->orWhere('user_id', $search);
+                });
+            })
             ->with(['comments.user'])
             ->latest()
             ->paginate(8);

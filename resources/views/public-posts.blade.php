@@ -30,8 +30,23 @@
 <body class="bg-gray-900 text-gray-100 font-sans">
 
     <!-- Header -->
-    <header class="bg-gradient-to-r from-gray-900 to-black shadow-lg py-4 px-6 flex justify-between items-center">
-        <h1 class="text-3xl font-bold">Quillly</h1>
+    <header
+        class="bg-gradient-to-r from-gray-900 to-black shadow-lg py-4 px-6 flex flex-wrap justify-between items-center gap-4">
+        <!-- Logo -->
+        <h1 class="text-3xl font-bold text-white">Quillly</h1>
+
+        <!-- Search Form -->
+        <form action="{{ route('explore.posts') }}" method="GET" class="flex flex-1 max-w-md">
+            <input type="text" name="search" value="{{ request('search') }}"
+                placeholder="Search by User ID or Post Title..."
+                class="border border-gray-600 bg-gray-800 text-white placeholder-gray-400 rounded-l px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <button type="submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r transition duration-200">
+                Search
+            </button>
+        </form>
+
+        <!-- Navigation -->
         @auth
             <div class="flex items-center gap-4">
                 <a href="{{ route('create-post') }}"
@@ -57,14 +72,15 @@
                     </button>
                 </form>
             </div>
-
         @endauth
 
+        <!-- Website Analytics Link (Always visible) -->
         <a href="{{ route('web-analytics') }}"
             class="bg-gray-900 hover:bg-green-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow transition duration-200">
             Website Analytics
         </a>
     </header>
+
 
     <section class="bg-gradient-to-r from-gray-900 to-black text-white">
         <div class="max-w-5xl mx-auto px-6 py-20 text-center">
@@ -107,22 +123,21 @@
             🔍 See What's Shared
         </h2>
         <h2 class="text-gray-900">.</h2>
-<div class="flex flex-wrap gap-3 mb-6">
-    @foreach($categories as $cat)
-        <a href="{{ route('explore.posts', $cat->name) }}"
-           class="px-4 py-2 text-sm rounded-full border border-blue-600
-                  {{ $category == $cat->name ? 'bg-blue-600 text-white' : 'text-blue-600 hover:bg-blue-100' }}">
-            {{ $cat->name }}
-        </a>
-    @endforeach
+        <div class="flex flex-wrap gap-3 mb-6">
+            @foreach($categories as $cat)
+                <a href="{{ route('explore.posts', $cat->name) }}" class="px-4 py-2 text-sm rounded-full border border-blue-600
+                          {{ $category == $cat->name ? 'bg-blue-600 text-white' : 'text-blue-600 hover:bg-blue-100' }}">
+                    {{ $cat->name }}
+                </a>
+            @endforeach
 
-    @if($category)
-        <a href="{{ route('explore.posts') }}"
-           class="px-4 py-2 text-sm rounded-full text-red-600 border border-red-600 hover:bg-red-100">
-            Clear Filter ✕
-        </a>
-    @endif
-</div>
+            @if($category)
+                <a href="{{ route('explore.posts') }}"
+                    class="px-4 py-2 text-sm rounded-full text-red-600 border border-red-600 hover:bg-red-100">
+                    Clear Filter ✕
+                </a>
+            @endif
+        </div>
 
         <h2 class="text-gray-900">.</h2>
 
@@ -130,6 +145,9 @@
         @foreach ($posts as $post)
             <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 mb-6 shadow-xl">
                 <h3 class="text-2xl font-semibold mb-2 text-white">{{ $post->title }}</h3>
+                <p class="text-gray-500 text-sm">
+                    Posted on {{ $post->created_at->format('F j, Y') }}
+                </p>
                 <p class="text-gray-300 mb-3">{{ $post->body }}</p>
                 <p class="text-sm text-gray-500 mb-4">Posted by User ID: {{ $post->user_id }}</p>
 
